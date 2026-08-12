@@ -14,7 +14,7 @@ def upsert_graph(driver, users_df, products_df, orders_df):
             )
         for _, row in products_df.iterrows():
             session.run(
-                "MERGE (p:Product {id: $id}) SET p.sku = $sku, p.name = $name", p.category = $category", p.price = $price",
+                "MERGE (p:Product {id: $id}) SET p.sku = $sku, p.name = $name, p.category = $category, p.price = $price",
                 id=int(row["product_id"]),
                 sku=row["sku"],
                 name=row["name"],
@@ -28,3 +28,10 @@ def upsert_graph(driver, users_df, products_df, orders_df):
                 MATCH (p:Product {id: $product_id})
                 MERGE (u)-[:PURCHASED {order_id: $order_id, quantity: $quantity, unit_price: $unit_price}]->(p)
                 """,
+
+                user_id=int(row["user_id"]),
+                product_id=int(row["product_id"]),
+                order_id=int(row["order_id"]),
+                quantity=int(row["quantity"]),
+                unit_price=float(row["unit_price"])
+            )
