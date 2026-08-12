@@ -18,3 +18,9 @@ def top_recommendations_for_product(pairs_df, product_id, limit=5, min_count=1):
     mask_b = pairs_df['product_id_b'] == product_id
     subset = pairs_df[mask_a | mask_b].copy()
     if subset.empty:
+        return pd.DataFrame(columns=["recommended_product_id", "co_purchase_count"])
+    subset["recommended_product_id"] = subset.apply(
+        lambda r: r["product_id_b"] if r["product_id_a"] == product_id else r["product_id_a"], axis=1)
+    subset = subset[subset["co_purchase_count"] >= min_count]
+    return subset[["recommended_product_id", "co_purchase_count"]].sort_values(
+        ["co_purchase_count", "recommended_product_id"], ascending=[False, True]).head(limit).reset_index(drop=True)
