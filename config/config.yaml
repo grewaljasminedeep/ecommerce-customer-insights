@@ -9,3 +9,8 @@ neo4j:
   uri: bolt://localhost:7687
   user: neo4j
   password: Jasmine@123
+
+pipeline:
+  export_dir: data/exports
+  min_copurchase_count: 2
+  recommendation_limit: 10
