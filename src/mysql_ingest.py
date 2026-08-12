@@ -18,3 +18,9 @@ def fetch_orders_df(conn):
     WHERE o.status = 'COMPLETED'
     """
     return pd.read_sql(query, conn)
+
+def fetch_products_df(conn):
+    return pd.read_sql("SELECT product_id, sku, name, category, price FROM products", conn)
+
+def fetch_users_df(conn):
+    return pd.read_sql("SELECT user_id, email, full_name FROM users", conn)
