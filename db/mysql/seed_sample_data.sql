@@ -10,3 +10,12 @@ INSERT INTO products (sku, name, category, price) VALUES
 ('SKU-1002', 'Mechanical Keyboard', 'Accessories', 89.99),
 ('SKU-2001', 'USB-C Hub', 'Accessories', 49.99),
 ('SKU-3001', 'Office Chair', 'Furniture', 199.99);
+
+INSERT INTO orders (user_id, status) VALUES
+(1, 'COMPLETED'),
+(2, 'COMPLETED'),
+(3, 'COMPLETED');
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
+(1, 1, 1, 29.99),
+(1, 2, 1, 89.99),
