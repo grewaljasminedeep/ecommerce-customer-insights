@@ -30,3 +30,11 @@ CREATE TABLE IF NOT EXISTS order_items (
     order_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL DEFAULT 1,
+    unit_price DECIMAL(12, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE IF NOT EXISTS product_affinity (
+    affinity_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id_a INT NOT NULL,
