@@ -19,3 +19,7 @@ INSERT INTO orders (user_id, status) VALUES
 INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
 (1, 1, 1, 29.99),
 (1, 2, 1, 89.99),
+(2, 1, 1, 29.99),
+(2, 3, 1, 49.99),
+(3, 2, 1, 89.99),
+(3, 3, 1, 49.99);
