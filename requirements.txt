@@ -1,0 +1,6 @@
+mysql-connector-python
+neo4j
+pandas
+numpy
+pyyaml
+python-dotenv
