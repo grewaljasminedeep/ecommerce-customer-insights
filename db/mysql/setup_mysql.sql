@@ -38,3 +38,8 @@ CREATE TABLE IF NOT EXISTS order_items (
 CREATE TABLE IF NOT EXISTS product_affinity (
     affinity_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id_a INT NOT NULL,
+    product_id_b INT NOT NULL,
+    co_purchase_count INT NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_pair (product_id_a, product_id_b)
+);
