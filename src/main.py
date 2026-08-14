@@ -18,3 +18,7 @@ def main():
     export_all(cfg["pipeline"] ["export_dir"], category_df, clv_df, affinity_df)
     neo4j_driver = connect_neo4j(cfg["neo4j"])
     upsert_graph(neo4j_driver, users_df, products_df, orders_df)
+    neo4j_driver.close()
+    mysql_conn.close()
+
+if __name__ == "__main__": main()
