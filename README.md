@@ -88,7 +88,26 @@ pipeline:
 
 ## Usage
 
-### Run the Full ETL Pipeline
+### Using the CLI Interface (Recommended)
+
+The project provides a modular CLI for flexible pipeline execution:
+
+```bash
+# Run all pipeline stages
+python -m src.cli run_all
+
+# Or run individual stages
+python -m src.cli ingest         # Extract data from MySQL
+python -m src.cli analyze        # Compute metrics (category revenue, CLV, affinity scores)
+python -m src.cli graph          # Load data into Neo4j
+python -m src.cli export         # Export metrics to CSV files
+```
+
+Each command loads the necessary data and executes its stage of the pipeline.
+
+### Using the Orchestration Script (Legacy)
+
+For automated execution of the complete pipeline:
 
 ```bash
 python -m src.main
@@ -139,17 +158,61 @@ ecommerce-customer-insights/
 │   ├── run_etl.sh                # Execute full pipeline
 │   └── run_local_checks.sh       # Validation checks
 ├── src/
-│   ├── main.py                   # Pipeline orchestration
+│   ├── main.py                   # Pipeline orchestration (legacy)
+│   ├── cli.py                    # CLI interface with subcommands
 │   ├── config.py                 # Configuration loading
 │   ├── mysql_ingest.py           # MySQL data extraction
 │   ├── analytics.py              # Metric computations
 │   ├── recommendations.py        # Co-purchase logic
 │   ├── neo4j_graph.py            # Graph database operations
-│   └── export_powerbi.py         # Export functionality
+│   ├── export_powerbi.py         # Export functionality
+│   ├── graph_queries.py          # Graph query utilities
+│   ├── validation.py             # Data validation functions
+│   └── pipeline/                 # Modular pipeline components
+│       ├── __init__.py
+│       ├── ingest.py             # Data ingestion module
+│       ├── analyze.py            # Analytics computation module
+│       ├── graph.py              # Graph operations module
+│       └── export.py             # Export module
 └── tests/                        # Test suite
+    ├── test_cli.py               # CLI tests
+    ├── test_graph_queries.py     # Graph query tests
+    └── test_validation.py        # Validation tests
 ```
 
 ## Core Modules
+
+### `cli.py`
+Command-line interface for modular pipeline execution:
+- `run_ingest` - Execute data ingestion from MySQL
+- `run_graph` - Load data into Neo4j graph database
+- `run_analyze` - Compute analytics metrics
+- `run_export` - Export results to CSV files
+- Supports subcommands: `ingest`, `graph`, `analyze`, `export`, `run_all`
+
+### Pipeline Modules
+
+#### `pipeline/ingest.py`
+Data ingestion from MySQL:
+- `run_ingest()` - Main ingestion orchestrator returning (users_df, products_df, orders_df)
+- Wraps functions from `mysql_ingest.py`
+
+#### `pipeline/analyze.py`
+Analytics computation:
+- `run_analyze()` - Computes all metrics returning (category_df, clv_df, affinity_df)
+- Calls analytics and recommendation functions
+
+#### `pipeline/graph.py`
+Graph database operations:
+- `run_graph()` - Upsert data to Neo4j graph
+- Wraps Neo4j connection and graph operations
+
+#### `pipeline/export.py`
+Data export functionality:
+- `run_export()` - Export all computed metrics to CSV files
+- Wraps export_powerbi functions
+
+### Core Library Modules
 
 ### `mysql_ingest.py`
 Handles MySQL connectivity and data extraction:
@@ -177,6 +240,14 @@ Graph database operations:
 ### `export_powerbi.py`
 Export analytics results:
 - `export_all()` - Export all computed metrics to CSV files for Power BI
+
+### `graph_queries.py`
+Graph query utilities:
+- Functions for querying relationship data from Neo4j
+
+### `validation.py`
+Data validation functions:
+- Quality checks and data integrity validation
 
 ## Database Schema
 
@@ -311,4 +382,4 @@ For questions or issues, please open an issue in the repository.
 
 ---
 
-**Last Updated**: 2026-08-13
+**Last Updated**: 2026-09-01
